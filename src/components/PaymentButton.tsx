@@ -15,17 +15,19 @@ const WalletMultiButton = dynamic(
 
 interface Props {
   onPaymentComplete: () => void;
+  isContinuePayment?: boolean; // Nowy prop dla rozróżnienia typu płatności
 }
 
 const SPL_TOKEN_ADDRESS = 'J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump';
-const RECIPIENT_ADDRESS = '9sAx8icUtm88PnkWoZFpAbJERULXwhuqxHFjKC7H7b3q';
-const PAYMENT_AMOUNT = 1; // 1 token
+const RECIPIENT_ADDRESS = '86kXaTTKGg9GmfH2Gr1syACs2SXEoyostL2bL7E19oV8';
+const PAYMENT_AMOUNT = 1000000; // 1M tokenów
+const PAYMENT_AMOUNT_FOR_CONTINUE = 500000; // 0.5M tokenów dla kontynuacji
 const TOKEN_DECIMALS = 6; // standardowa liczba miejsc dziesiętnych dla tokenów DEV
 
 // Używamy endpointu Alchemy
 const RPC_ENDPOINT = 'https://solana-mainnet.g.alchemy.com/v2/jpJwZVUI4FlCf1IWtaVAjq6Lj2ABh7tv';
 
-export const PaymentButton: FC<Props> = ({ onPaymentComplete }) => {
+export const PaymentButton: FC<Props> = ({ onPaymentComplete, isContinuePayment = false }) => {
   const { publicKey, sendTransaction } = useWallet();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,8 +88,9 @@ export const PaymentButton: FC<Props> = ({ onPaymentComplete }) => {
         recipient
       );
 
-      // Calculate amount with decimals
-      const amountWithDecimals = PAYMENT_AMOUNT * Math.pow(10, TOKEN_DECIMALS);
+      // Calculate amount with decimals - różne kwoty dla różnych typów płatności
+      const paymentAmount = isContinuePayment ? PAYMENT_AMOUNT_FOR_CONTINUE : PAYMENT_AMOUNT;
+      const amountWithDecimals = paymentAmount * Math.pow(10, TOKEN_DECIMALS);
 
       // Create transfer instruction
       const transferInstruction = createTransferInstruction(

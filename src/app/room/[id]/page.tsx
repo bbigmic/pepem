@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { use } from 'react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Language } from '@/i18n/translations';
+import { PaymentButton } from '@/components/PaymentButton';
 
 interface Message {
   role: string;
@@ -18,6 +19,7 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [needsPayment, setNeedsPayment] = useState(false);
   const initialLoadDone = useRef(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -34,6 +36,16 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Sprawdzanie czy potrzebna jest płatność za kontynuację (co 3 wiadomości po pierwszej parze)
+  const checkIfPaymentNeeded = useCallback(() => {
+    const messagesAfterInitial = messages.length - 2; // Odejmujemy pierwszą parę wiadomości
+    if (messagesAfterInitial > 0 && messagesAfterInitial % 3 === 0) {
+      setNeedsPayment(true);
+      return true;
+    }
+    return false;
+  }, [messages.length]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -109,6 +121,11 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
   const generateConversation = useCallback(async () => {
     if (isGenerating) return;
 
+    // Sprawdź czy potrzebna jest płatność przed generowaniem
+    if (checkIfPaymentNeeded()) {
+      return; // Zatrzymaj generowanie jeśli potrzebna jest płatność
+    }
+
     try {
       setIsGenerating(true);
       
@@ -154,7 +171,7 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
       setIsGenerating(false);
       setIsLoading(false);
     }
-  }, [ai1Role, ai2Role, initialTopic, messages, isGenerating, generateResponse, language]);
+  }, [ai1Role, ai2Role, initialTopic, messages, isGenerating, generateResponse, language, checkIfPaymentNeeded]);
 
   useEffect(() => {
     if (!initialLoadDone.current && messages.length === 0) {
@@ -162,6 +179,18 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
       generateConversation();
     }
   }, [messages.length, generateConversation]);
+
+  // Sprawdzaj czy potrzebna jest płatność po każdej zmianie wiadomości
+  useEffect(() => {
+    if (messages.length > 2) {
+      checkIfPaymentNeeded();
+    }
+  }, [messages, checkIfPaymentNeeded]);
+
+  const handleContinuePayment = () => {
+    setNeedsPayment(false);
+    generateConversation();
+  };
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-gray-900">
@@ -288,24 +317,36 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
 
               <div className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md shadow-lg p-4 border-t border-white/20">
                 <div className="max-w-4xl mx-auto">
-                  <button
-                    onClick={generateConversation}
-                    disabled={isGenerating}
-                    className={`w-full sm:w-auto px-8 py-3 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 ${
-                      isGenerating
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-indigo-600 hover:bg-indigo-700'
-                    }`}
-                  >
-                    {isGenerating ? (
-                      <div className="flex items-center justify-center space-x-2">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        <span>{t('generating')}</span>
-                      </div>
-                    ) : (
-                      t('continueConversation')
-                    )}
-                  </button>
+                  {needsPayment ? (
+                    <div className="flex flex-col items-center space-y-4">
+                      <p className="text-gray-700 dark:text-gray-300 text-center">
+                        {t('continuePaymentRequired')}
+                      </p>
+                      <PaymentButton 
+                        onPaymentComplete={handleContinuePayment} 
+                        isContinuePayment={true}
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      onClick={generateConversation}
+                      disabled={isGenerating}
+                      className={`w-full sm:w-auto px-8 py-3 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 ${
+                        isGenerating
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-indigo-600 hover:bg-indigo-700'
+                      }`}
+                    >
+                      {isGenerating ? (
+                        <div className="flex items-center justify-center space-x-2">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          <span>{t('generating')}</span>
+                        </div>
+                      ) : (
+                        t('continueConversation')
+                      )}
+                    </button>
+                  )}
                 </div>
               </div>
             </>
