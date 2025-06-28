@@ -2,12 +2,9 @@
 
 import { FC, ReactNode, useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { Connection } from '@solana/web3.js';
-
-require('@solana/wallet-adapter-react-ui/styles.css');
+import '@solana/wallet-adapter-react-ui/styles.css';
 
 interface Props {
   children: ReactNode;
@@ -15,15 +12,6 @@ interface Props {
 
 // Używamy tego samego endpointu co w PaymentButton
 const RPC_ENDPOINT = 'https://solana-mainnet.g.alchemy.com/v2/jpJwZVUI4FlCf1IWtaVAjq6Lj2ABh7tv';
-
-// Tworzymy połączenie z wyciszonymi logami WebSocket
-const connection = new Connection(RPC_ENDPOINT, {
-  commitment: 'confirmed',
-  disableRetryOnRateLimit: true,
-  httpHeaders: {
-    'Content-Type': 'application/json',
-  },
-});
 
 // Wyciszamy błędy WebSocket
 const originalConsoleError = console.error;

@@ -3,8 +3,8 @@
 import { FC, useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
-import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
-import { TOKEN_PROGRAM_ID, getAssociatedTokenAddress, createTransferInstruction } from '@solana/spl-token';
+import { Connection, PublicKey, Transaction } from '@solana/web3.js';
+import { getAssociatedTokenAddress, createTransferInstruction } from '@solana/spl-token';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 // Dynamiczny import komponentu portfela
@@ -212,15 +212,16 @@ export const PaymentButton: FC<Props> = ({ onPaymentComplete }) => {
         setIsProcessing(false);
         setIsWaitingForConfirmation(false);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Payment error:', error);
       setIsWaitingForConfirmation(false);
-      if (error.message?.includes('User rejected')) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      if (errorMessage?.includes('User rejected')) {
         setError(t('transactionRejected'));
-      } else if (error.message?.includes('403')) {
+      } else if (errorMessage?.includes('403')) {
         setError(t('networkError'));
       } else {
-        setError(t('paymentError').replace('{message}', error.message));
+        setError(t('paymentError').replace('{message}', errorMessage));
       }
     }
   };

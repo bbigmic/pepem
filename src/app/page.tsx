@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Language } from '@/i18n/translations';
 import { PaymentButton } from '@/components/PaymentButton';
-import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
