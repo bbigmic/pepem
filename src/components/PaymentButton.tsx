@@ -231,35 +231,36 @@ export const PaymentButton: FC<Props> = ({ onPaymentComplete, isContinuePayment 
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      <div className="flex items-center space-x-4">
-        <button
-          onClick={handlePayment}
-          disabled={!publicKey || isProcessing || isWaitingForConfirmation}
-          className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
-            !publicKey || isProcessing || isWaitingForConfirmation
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-          }`}
-        >
-          {!publicKey ? (
-            <WalletMultiButton />
-          ) : isProcessing || isWaitingForConfirmation ? (
-            <div className="flex items-center space-x-2">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-              <span>{isWaitingForConfirmation ? t('transactionSent') : t('processing')}</span>
-            </div>
-          ) : (
-            t('payWithSPL')
-          )}
-        </button>
-        
-        <button
-          onClick={() => window.open('https://pump.fun/coin/J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump', '_blank')}
-          className="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 bg-green-600 hover:bg-green-700 text-white"
-        >
-          {t('buyDevToken')}
-        </button>
-      </div>
+      <WalletMultiButton className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105" />
+      
+      {publicKey && (
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={handlePayment}
+            disabled={isProcessing || isWaitingForConfirmation}
+            className={`px-8 py-3 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 ${
+              isProcessing || isWaitingForConfirmation
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-indigo-600 hover:bg-indigo-700'
+            }`}
+          >
+            {isProcessing || isWaitingForConfirmation ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <span>{isWaitingForConfirmation ? t('transactionSent') : t('processing')}</span>
+              </div>
+            ) : (
+              t('payWithSPL')
+            )}
+          </button>
+          <button
+            onClick={() => window.open('https://pump.fun/coin/J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump', '_blank')}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105"
+          >
+            {t('buyDevToken')}
+          </button>
+        </div>
+      )}
       
       {error && (
         <div className="text-red-500 text-center max-w-md">

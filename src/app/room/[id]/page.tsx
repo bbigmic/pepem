@@ -366,18 +366,10 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
                       <p className="text-gray-700 dark:text-gray-300 text-center">
                         {t('continuePaymentRequired')}
                       </p>
-                      <div className="flex items-center space-x-4">
-                        <PaymentButton 
-                          onPaymentComplete={handleContinuePayment} 
-                          isContinuePayment={true}
-                        />
-                        <button
-                          onClick={() => window.open('https://pump.fun/coin/J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump', '_blank')}
-                          className="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 bg-green-600 hover:bg-green-700 text-white"
-                        >
-                          {t('buyDevToken')}
-                        </button>
-                      </div>
+                      <PaymentButton 
+                        onPaymentComplete={handleContinuePayment} 
+                        isContinuePayment={true}
+                      />
                     </div>
                   ) : (
                     <button
