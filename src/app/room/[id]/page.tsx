@@ -40,6 +40,12 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
   // Sprawdzanie czy potrzebna jest płatność za kontynuację (co 3 wiadomości po pierwszej parze)
   const checkIfPaymentNeeded = useCallback(() => {
     const messagesAfterInitial = messages.length - 2; // Odejmujemy pierwszą parę wiadomości
+    console.log('Sprawdzanie płatności:', { 
+      totalMessages: messages.length, 
+      messagesAfterInitial, 
+      needsPayment: messagesAfterInitial > 0 && messagesAfterInitial % 3 === 0 
+    });
+    
     if (messagesAfterInitial > 0 && messagesAfterInitial % 3 === 0) {
       setNeedsPayment(true);
       return true;
@@ -182,14 +188,52 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
 
   // Sprawdzaj czy potrzebna jest płatność po każdej zmianie wiadomości
   useEffect(() => {
-    if (messages.length > 2) {
+    if (messages.length > 2 && !isGenerating) {
       checkIfPaymentNeeded();
     }
-  }, [messages, checkIfPaymentNeeded]);
+  }, [messages, checkIfPaymentNeeded, isGenerating]);
 
-  const handleContinuePayment = () => {
+  const handleContinuePayment = async () => {
     setNeedsPayment(false);
-    generateConversation();
+    
+    // Generuj wiadomość bez sprawdzania płatności
+    if (isGenerating) return;
+
+    try {
+      setIsGenerating(true);
+      
+      const lastMessage = messages[messages.length - 1];
+      const nextRole = lastMessage.role === ai1Role ? ai2Role : ai1Role;
+      
+      const conversationHistory = messages
+        .map(msg => `${msg.role}: ${msg.content}`)
+        .join('\n');
+      
+      const prompt = getConversationPromptByLanguage(nextRole, conversationHistory, language);
+      const content = await generateResponse(prompt);
+
+      const newMessage: Message = {
+        role: nextRole,
+        content
+      };
+
+      setMessages(prev => [...prev, newMessage]);
+    } catch (error) {
+      console.error('Błąd podczas generowania konwersacji:', error);
+    } finally {
+      setIsGenerating(false);
+      setIsLoading(false);
+      
+      // Sprawdź czy potrzebna jest kolejna płatność po zakończeniu generowania
+      setTimeout(() => {
+        if (messages.length + 1 > 2) {
+          const messagesAfterInitial = (messages.length + 1) - 2;
+          if (messagesAfterInitial > 0 && messagesAfterInitial % 3 === 0) {
+            setNeedsPayment(true);
+          }
+        }
+      }, 100);
+    }
   };
 
   return (
