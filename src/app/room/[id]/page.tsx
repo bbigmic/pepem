@@ -87,39 +87,39 @@ export default function RoomPage({ params }: { params: Promise<{ id: string }> }
 
   const getPromptByLanguage = (role: string, topic: string, language: string) => {
     const prompts = {
-      pl: `Jesteś ${role}. Rozpocznij rozmowę o temacie: ${topic}.`,
-      en: `You are ${role}. Start a conversation about: ${topic}.`,
-      de: `Du bist ${role}. Beginne ein Gespräch über: ${topic}.`,
-      ua: `Ви є ${role}. Почніть розмову про: ${topic}.`,
-      ru: `Вы ${role}. Начните разговор о: ${topic}.`,
-      es: `Eres ${role}. Comienza una conversación sobre: ${topic}.`,
-      fr: `Vous êtes ${role}. Commencez une conversation sur: ${topic}.`
+      pl: `Jesteś ${role}. Rozpocznij rozmowę o temacie: ${topic}. Zakończ pytaniem, które naturalnie wynika z Twojej myśli i stymuluje do twórczości i odkrycia nowych rzeczy.`,
+      en: `You are ${role}. Start a conversation about: ${topic}. End with a question that naturally follows from your thought and stimulates creativity and the discovery of new things.`,
+      de: `Du bist ${role}. Beginne ein Gespräch über: ${topic}. Beende mit einer Frage, die sich natürlich aus deinem Gedanken ergibt und Kreativität sowie die Entdeckung neuer Dinge anregt.`,
+      ua: `Ви є ${role}. Почніть розмову про: ${topic}. Завершіть запитанням, яке природно випливає з вашої думки та стимулює творчість і відкриття нових речей.`,
+      ru: `Вы ${role}. Начните разговор о: ${topic}. Завершите вопросом, который естественно вытекает из вашей мысли и стимулирует творчество и открытие новых вещей.`,
+      es: `Eres ${role}. Comienza una conversación sobre: ${topic}. Termina con una pregunta que surja naturalmente de tu pensamiento y estimule la creatividad y el descubrimiento de cosas nuevas.`,
+      fr: `Vous êtes ${role}. Commencez une conversation sur: ${topic}. Terminez par une question qui découle naturellement de votre pensée et stimule la créativité ainsi que la découverte de nouvelles choses.`
     };
     return prompts[language as keyof typeof prompts] || prompts.en;
   };
 
   const getResponsePromptByLanguage = (role: string, content: string, language: string) => {
     const prompts = {
-      pl: `Jesteś ${role}. Odpowiedz na wiadomość: "${content}".`,
-      en: `You are ${role}. Respond to the message: "${content}".`,
-      de: `Du bist ${role}. Antworte auf die Nachricht: "${content}".`,
-      ua: `Ви є ${role}. Відповідь на повідомлення: "${content}".`,
-      ru: `Вы ${role}. Ответьте на сообщение: "${content}".`,
-      es: `Eres ${role}. Responde al mensaje: "${content}".`,
-      fr: `Vous êtes ${role}. Répondez au message: "${content}".`
+      pl: `Jesteś ${role}. Odpowiedz na wiadomość: "${content}". Zakończ pytaniem, które naturalnie wynika z Twojej myśli i stymuluje do twórczości i odkrycia nowych rzeczy.`,
+      en: `You are ${role}. Respond to the message: "${content}". End with a question that naturally follows from your thought and stimulates creativity and the discovery of new things.`,
+      de: `Du bist ${role}. Antworte auf die Nachricht: "${content}". Beende mit einer Frage, die sich natürlich aus deinem Gedanken ergibt und Kreativität sowie die Entdeckung neuer Dinge anregt.`,
+      ua: `Ви є ${role}. Відповідь на повідомлення: "${content}". Завершіть запитанням, яке природно випливає з вашої думки та стимулює творчість і відкриття нових речей.`,
+      ru: `Вы ${role}. Ответьте на сообщение: "${content}". Завершите вопросом, который естественно вытекает из вашей мысли и стимулирует творчество и открытие новых вещей.`,
+      es: `Eres ${role}. Responde al mensaje: "${content}". Termina con una pregunta que surja naturalmente de tu pensamiento y estimule la creatividad y el descubrimiento de cosas nuevas.`,
+      fr: `Vous êtes ${role}. Répondez au message: "${content}". Terminez par une question qui découle naturellement de votre pensée et stimule la créativité ainsi que la découverte de nouvelles choses.`
     };
     return prompts[language as keyof typeof prompts] || prompts.en;
   };
 
   const getConversationPromptByLanguage = (role: string, history: string, language: string) => {
     const prompts = {
-      pl: `Jesteś ${role}. Oto historia konwersacji:\n${history}\n\nOdpowiedz na ostatnią wiadomość, biorąc pod uwagę cały kontekst rozmowy.`,
-      en: `You are ${role}. Here's the conversation history:\n${history}\n\nRespond to the last message, taking into account the entire conversation context.`,
-      de: `Du bist ${role}. Hier ist die Gesprächsgeschichte:\n${history}\n\nAntworte auf die letzte Nachricht unter Berücksichtigung des gesamten Gesprächskontexts.`,
-      ua: `Ви є ${role}. Ось історія розмови:\n${history}\n\nВідповідь на останнє повідомлення, враховуючи весь контекст розмови.`,
-      ru: `Вы ${role}. Вот история разговора:\n${history}\n\nОтветьте на последнее сообщение, учитывая весь контекст разговора.`,
-      es: `Eres ${role}. Aquí está el historial de la conversación:\n${history}\n\nResponde al último mensaje, teniendo en cuenta todo el contexto de la conversación.`,
-      fr: `Vous êtes ${role}. Voici l'historique de la conversation:\n${history}\n\nRépondez au dernier message en tenant compte de tout le contexte de la conversation.`
+      pl: `Jesteś ${role}. Oto historia konwersacji:\n${history}\n\nOdpowiedz na ostatnią wiadomość, biorąc pod uwagę cały kontekst rozmowy. Zakończ pytaniem, które naturalnie wynika z Twojej myśli i stymuluje do twórczości i odkrycia nowych rzeczy.`,
+      en: `You are ${role}. Here's the conversation history:\n${history}\n\nRespond to the last message, taking into account the entire conversation context. End with a question that naturally follows from your thought and stimulates creativity and the discovery of new things.`,
+      de: `Du bist ${role}. Hier ist die Gesprächsgeschichte:\n${history}\n\nAntworte auf die letzte Nachricht unter Berücksichtigung des gesamten Gesprächskontexts. Beende mit einer Frage, die sich natürlich aus deinem Gedanken ergibt und Kreativität sowie die Entdeckung neuer Dinge anregt.`,
+      ua: `Ви є ${role}. Ось історія розмови:\n${history}\n\nВідповідь на останнє повідомлення, враховуючи весь контекст розмови. Завершіть запитанням, яке природно випливає з вашої думки та стимулює творчість і відкриття нових речей.`,
+      ru: `Вы ${role}. Вот история разговора:\n${history}\n\nОтветьте на последнее сообщение, учитывая весь контекст разговора. Завершите вопросом, который естественно вытекает из вашей мысли и стимулирует творчество и открытие новых вещей.`,
+      es: `Eres ${role}. Aquí está el historial de la conversación:\n${history}\n\nResponde al último mensaje, teniendo en cuenta todo el contexto de la conversación. Termina con una pregunta que surja naturalmente de tu pensamiento y estimule la creatividad y el descubrimiento de cosas nuevas.`,
+      fr: `Vous êtes ${role}. Voici l'historique de la conversation:\n${history}\n\nRépondez au dernier message en tenant compte de tout le contexte de la conversation. Terminez par une question qui découle naturellement de votre pensée et stimule la créativité ainsi que la découverte de nouvelles choses.`
     };
     return prompts[language as keyof typeof prompts] || prompts.en;
   };
