@@ -22,7 +22,7 @@ const SPL_TOKEN_ADDRESS = 'J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump';
 const RECIPIENT_ADDRESS = '86kXaTTKGg9GmfH2Gr1syACs2SXEoyostL2bL7E19oV8';
 const PAYMENT_AMOUNT = 1000000; // 1M tokenów
 const PAYMENT_AMOUNT_FOR_CONTINUE = 500000; // 0.5M tokenów dla kontynuacji
-const TOKEN_DECIMALS = 6; // standardowa liczba miejsc dziesiętnych dla tokenów DEV
+const TOKEN_DECIMALS = 6; // standardowa liczba miejsc dziesiętnych dla tokenów PEPEM
 
 // Używamy endpointu Alchemy
 const RPC_ENDPOINT = 'https://solana-mainnet.g.alchemy.com/v2/jpJwZVUI4FlCf1IWtaVAjq6Lj2ABh7tv';

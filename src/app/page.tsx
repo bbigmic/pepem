@@ -183,7 +183,7 @@ export default function Home() {
             {!isPaid ? (
               <div className="flex flex-col items-center space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 text-center">
-                  Please connect your wallet and pay 1M DEV token to create a room
+                  Please connect your wallet and pay 1M PEPEM token to create a room
                 </p>
                 <PaymentButton onPaymentComplete={() => setIsPaid(true)} />
               </div>
