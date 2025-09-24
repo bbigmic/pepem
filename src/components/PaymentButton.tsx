@@ -18,10 +18,10 @@ interface Props {
   isContinuePayment?: boolean; // Nowy prop dla rozróżnienia typu płatności
 }
 
-const SPL_TOKEN_ADDRESS = 'J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump';
+const SPL_TOKEN_ADDRESS = '6nfTaRKprhUUo5VSnCd9tu6GHjurquSyYaESKmbgpump';
 const RECIPIENT_ADDRESS = '86kXaTTKGg9GmfH2Gr1syACs2SXEoyostL2bL7E19oV8';
-const PAYMENT_AMOUNT = 1000000; // 1M tokenów
-const PAYMENT_AMOUNT_FOR_CONTINUE = 500000; // 0.5M tokenów dla kontynuacji
+const PAYMENT_AMOUNT = 10000000; // 10M tokenów
+const PAYMENT_AMOUNT_FOR_CONTINUE = 5000000; // 5M tokenów dla kontynuacji
 const TOKEN_DECIMALS = 6; // standardowa liczba miejsc dziesiętnych dla tokenów PEPEM
 
 // Używamy endpointu Alchemy
@@ -254,7 +254,7 @@ export const PaymentButton: FC<Props> = ({ onPaymentComplete, isContinuePayment 
             )}
           </button>
           <button
-            onClick={() => window.open('https://pump.fun/coin/J3D728v2apramx6UydCVHfKtBC7wfKmc1YUHJJ6Ppump', '_blank')}
+            onClick={() => window.open('https://pump.fun/coin/6nfTaRKprhUUo5VSnCd9tu6GHjurquSyYaESKmbgpump', '_blank')}
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105"
           >
             {t('buyDevToken')}

@@ -115,7 +115,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-2xl w-full">
-          <h1 className="text-5xl font-bold mb-2 text-center text-white">{t('title')}</h1>
+          <h1 className="text-5xl font-bold mb-2 mt-10 sm:mt-0 text-center text-white">{t('title')}</h1>
           <p className="text-xl text-gray-300 text-center mb-8">{t('subtitle')}</p>
           
           <form onSubmit={handleSubmit} className="space-y-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/20">
@@ -183,7 +183,7 @@ export default function Home() {
             {!isPaid ? (
               <div className="flex flex-col items-center space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 text-center">
-                  Please connect your wallet and pay 1M PEPEM token to create a room
+                  Please connect your wallet and pay 10M PEPEM to create a room
                 </p>
                 <PaymentButton onPaymentComplete={() => setIsPaid(true)} />
               </div>
